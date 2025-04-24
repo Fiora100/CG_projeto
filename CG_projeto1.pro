@@ -10,7 +10,6 @@ CONFIG += c++17
 
 SOURCES += \
     drawarea.cpp \
-    formageometrica.cpp \
     gerenciador.cpp \
     main.cpp \
     mainwindow.cpp
@@ -19,7 +18,8 @@ HEADERS += \
     drawarea.h \
     formageometrica.h \
     gerenciador.h \
-    mainwindow.h
+    mainwindow.h \
+    matriz3x3.h
 
 FORMS += \
     mainwindow.ui

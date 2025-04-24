@@ -9,7 +9,7 @@ class Gerenciador {
 public:
     ~Gerenciador();
 
-    formaGeometrica* criarForma(const QList<QPoint>& pontos, const QString& nome);
+    formaGeometrica* criarForma(const QList<std::vector<float>>& pontos, const QString& nome);
     void removerFormaPorIndice(int index);
     void limparFormas();
     const QList<formaGeometrica*>& getFormas() const;

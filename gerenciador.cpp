@@ -1,10 +1,10 @@
 #include "gerenciador.h"
 
 Gerenciador::~Gerenciador() {
-    limparFormas(); // Deleta tudo no final
+    limparFormas();
 }
 
-formaGeometrica* Gerenciador::criarForma(const QList<QPoint>& pontos, const QString& nome) {
+formaGeometrica* Gerenciador::criarForma(const QList<std::vector<float>>& pontos, const QString& nome) {
     formaGeometrica* novaForma = new formaGeometrica(pontos, nome);
     formas.append(novaForma);
     return novaForma;

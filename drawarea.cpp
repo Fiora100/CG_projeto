@@ -9,24 +9,35 @@ DrawArea::DrawArea(QWidget *parent)
 {
 }
 
+static QPointF vectorToQPointF(const std::vector<float>& vec) {
+    if (vec.size() >= 2) {
+        return QPointF(vec[0], vec[1]); // Ignore the 3rd coordinate (usually 1 in homogeneous coords)
+    }
+    return QPointF(); // Fallback in case of bad data
+}
+
 void DrawArea::paintEvent(QPaintEvent *)
 {
-if (m_mainWindow != nullptr)
-    {
+    if (m_mainWindow != nullptr) {
         QPainter painter(this);
-        QPen caneta(Qt::black,3);
+        QPen caneta(Qt::black, 3);
         painter.setPen(caneta);
         painter.setRenderHint(QPainter::Antialiasing);
+
         const QList<formaGeometrica*>& formas = m_mainWindow->listaDesenho.getFormas();
-        for(formaGeometrica* atual : formas){
-            QList<QPoint> formaAtual = atual->getPontos();
-            if (formaAtual.size() == 1)                                 // verifica se a forma é um ponto
-                painter.drawPoint(formaAtual[0]);
-            else for (int j = 0; j < formaAtual.size(); ++j) {          //formas com mais de um vertice
-                    QPoint ponto1 = formaAtual[j];
-                    QPoint ponto2 = formaAtual[(j + 1) % formaAtual.size()];// ultimo liga primeiro. (logica de resto)
+
+        for (formaGeometrica* atual : formas) {
+            QList<std::vector<float>> formaAtual = atual->getPontos();
+
+            if (formaAtual.size() == 1 && formaAtual[0].size() >= 2) {
+                painter.drawPoint(vectorToQPointF(formaAtual[0]));
+            } else {
+                for (int j = 0; j < formaAtual.size(); ++j) {
+                    QPointF ponto1 = vectorToQPointF(formaAtual[j]);
+                    QPointF ponto2 = vectorToQPointF(formaAtual[(j + 1) % formaAtual.size()]);
                     painter.drawLine(ponto1, ponto2);
                 }
+            }
         }
     }
 }
